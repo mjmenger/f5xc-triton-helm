@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "f5xc-triton.fullname" . }}
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ include "f5xc-triton.fullname" . }}
+  hostPath:
+    path: /var/lib/{{ include "f5xc-triton.fullname" . }}
+    type: DirectoryOrCreate

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nupic-models
+spec:
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nupic-models
+  hostPath:
+    path: /var/lib/nupic-models
+    type: DirectoryOrCreate

@@ -1,0 +1,153 @@
+# Default values for f5xc-triton.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nvcr.io/nvidia/tritonserver
+  tag: 24.03-py3
+  pullPolicy: IfNotPresent
+  modelRepositoryServer: localhost
+  modelRepositoryPath: /srv/models
+  numGpus: 0
+
+# add server args here e.g. --grpc-use-ssl, --grpc-server-certs, repository-poll-secs, etc
+serverArgs:
+  - 'tritonserver'
+  - '--model-repository=/models/model_repository'
+  - '--model-control-mode=explicit'
+  - '--rate-limit=execution_count'
+  - '--rate-limit-resource=R1:20'  
+
+# if set to false, then the models directory needs to be created and populated before installing this chart
+loadmodels:
+  enabled: true
+
+env:
+  - name: MODELS_URL
+    value: "abc"
+  - name: CAJAL_LICENSE
+    value: "/inference/license/license.cfg"
+
+imagePullSecrets: []
+
+ports: 
+  - containerPort: 8000
+    name: http
+    protocol: TCP
+  - containerPort: 8001
+    name: grpc
+    protocol: TCP
+  - containerPort: 8002
+    name: metrics
+    protocol: TCP
+  
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: NodePort
+  ports:
+    - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 8001
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+    - port: 8002
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  initialDelaySeconds: 15
+  failureThreshold: 3
+  periodSeconds: 10
+  httpGet:
+    path: /v2/health/live
+    port: http
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  failureThreshold: 3
+  httpGet:
+    path: /v2/health/ready
+    port: http
+startupProbe:
+  periodSeconds: 10
+  failureThreshold: 30
+  httpGet:
+    path: /v2/health/ready
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  #targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: avg_time_queue_us
+        target:
+          type: AverageValue
+          averageValue: 50  
+
+# Additional volumes on the output Deployment definition.
+volumes: 
+  - name: models
+    persistentVolumeClaim:
+      claimName: nupic-models
+
+      
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: 
+  - name: models
+    mountPath: /models
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
