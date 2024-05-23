@@ -58,3 +58,6 @@ helm -n nupic install nupic-dashboard ./f5xc-grafana/
 
 The kubernetes service for prometheus is at `http://nupic-metrics-f5xc-prometheus:9090`
 
+### import a simple dashboard for the triton metrics
+
+using the dashboard import features of Grafana, import the content of [dashboard.json](./dashboard.json)
