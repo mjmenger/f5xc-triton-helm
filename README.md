@@ -38,7 +38,89 @@ This assumes a helm release name of *nupic*. If you want to change it there are 
 ```bash
 helm -n nupic install nupic ./f5xc-triton/
 ```
+### a couple of simple tests
+- readiness
+```shell
+curl --request GET \
+  --url http://localhost:8000/v2/health/ready
+```
+returns
+```shell
+HTTP/1.1 200 OK
+Connection: close
+Content-Length: 0
+Content-Type: text/plain
+```
 
+- liveness
+```shell
+curl --request GET \
+  --url http://localhost:8000/v2/health/live
+```
+returns
+```shell
+HTTP/1.1 200 OK
+Connection: close
+Content-Length: 0
+Content-Type: text/plain
+```
+
+- api
+```shell
+curl --request GET \
+  --url http://localhost:8000/v2
+```
+returns
+```shell
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 285
+Connection: close
+
+{
+  "name": "triton",
+  "version": "2.44.0",
+  "extensions": [
+    "classification",
+    "sequence",
+    "model_repository",
+    "model_repository(unload_dependents)",
+    "schedule_policy",
+    "model_configuration",
+    "system_shared_memory",
+    "cuda_shared_memory",
+    "binary_tensor_data",
+    "parameters",
+    "statistics",
+    "trace",
+    "logging"
+  ]
+}
+```
+
+- models index
+```shell
+curl --request POST \
+  --url http://localhost:8000/v2/repository/models/index
+
+```
+returns
+```shell
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 56
+Connection: close
+
+[
+  {
+    "name": "densenet_onnx"
+  },
+  {
+    "name": "inception_graphdef"
+  }
+]
+```
+or something similar depending on the models you loaded
 
 ## Deploy the prometheus server pointing to the triton server
 
