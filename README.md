@@ -72,11 +72,27 @@ helm -n nupic install nupic-dashboard ./f5xc-grafana/
 
 ### configure the prometheus datasource 
 
-The kubernetes service for prometheus is at `http://nupic-metrics-f5xc-prometheus:9090`
+- forward the grafana service to a port on localhost
+```bash
+kubectl port-forward -n nupic svc/nupic-dashboard-f5xc-grafana 3000
+```
+- open a browser to `http://localhost:3000` and you should see the grafana application.
+- navigate to Connections -> Data sources
+- click `+ Add new data source`
+- select *Prometheus*
+- enter *nupic* as the name
+- enter `http://nupic-metrics-f5xc-prometheus:9090` for the *Prometheus server URL*
+- scroll to the bottom and click `Save & test`
 
 ### import a simple dashboard for the triton metrics
 
 using the dashboard import features of Grafana, import the content of [dashboard.json](./dashboard.json)
+- navigate to Dashboards
+- click `New` and select `Import`
+- open [dashboard.json](./dashboard.json) and copy the content
+- paste the json into the form and click `Load`
+- select the *nupic* data source 
+- click `Import`
 
 ## Configure HTTP Load Balancers
 Currently manual steps which will ultimately be automated.
