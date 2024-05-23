@@ -46,7 +46,23 @@ helm -n nupic install nupic ./f5xc-triton/
 helm -n nupic install nupic-metrics ./f5xc-prometheus/
 ```
 ### verify that the prometheus server is scraping the metrics of the triton server
-TBD
+This is very manual. A better solution will come around eventually.
+- forward the prometheus service to a port on localhost
+```bash
+kubectl port-forward -n nupic svc/nupic-metrics-f5xc-prometheus 9090
+```
+which should respond with 
+```bash
+Forwarding from 127.0.0.1:9090 -> 9090
+Forwarding from [::1]:9090 -> 9090
+Handling connection for 9090
+Handling connection for 9090
+```
+- open a browser to `http://localhost:9090` and you should see the prometheus application.
+- navigate to Status -> Targets
+- verify that all target endpoints are *UP*
+- use `ctrl-C` to end the port forwarding
+
 
 ## Deploy the grafana server to point to the prometheus server
 
@@ -61,3 +77,10 @@ The kubernetes service for prometheus is at `http://nupic-metrics-f5xc-prometheu
 ### import a simple dashboard for the triton metrics
 
 using the dashboard import features of Grafana, import the content of [dashboard.json](./dashboard.json)
+
+## Configure HTTP Load Balancers
+Currently manual steps which will ultimately be automated.
+### ... for the inference server
+TBD
+### ... for the dashboard
+TBD
