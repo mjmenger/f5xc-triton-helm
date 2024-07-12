@@ -12,6 +12,8 @@ image:
   modelRepositoryPath: /srv/models
   numGpus: 0
 
+modelsUrl: https://s3.us-west-2.amazonaws.com/releases.numenta.com/inference_server_models/models_f5_demo.tar.gz?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJHMEUCIQCtW%2Bs8VMLTfBaBqItoBhqiTlVz6QihJc34Rotcdk5mygIgc5V4SVXomU5mZ7jUGm1v919Nkd3hAN%2B2zUZ0L%2Fbndywq%2BwIIORAAGgw3ODM3ODI3NzAwMjIiDF4HvWlUUv89zKw%2B%2FCrYAjgQ5xTBjeejTz9x6nU0ArEh2YEEefPbhGBHJ%2BOcZFUneBIMo9efgj8ZihSLB1%2Fi%2B4tLQwsmEyCunlCnBDv1kTgHkZkuvlqYAXQbhel%2Fnk8Tn57iryC58jQgXksgf8WOgTAn8VkoM%2B6VG0BH8%2FjZjz5DlEOYeebQoaF9sv6KDQFkWHfbD%2BNHg6Bezvh6TgnURbWNjhNgKaQz1IMcQvQtUZpFGuLqFvwhmTxw6g6hXKlW%2FTW5o4oYhSGX%2BoYKEDm%2B02KRyxgbFblhJlb2Le3CTfzFu0eUpCXH%2FGGdFVgg95Bp91njMXTpYn2kufKikjNlWtZnUwR0IVSI1%2BuimebYi6fL29KMnCyLMrI91x%2FK0fZRK9wPbPDWWOI8IA4fWtg%2B2KfHCgW50iz%2F1ln0nuPIhIMnyBLdTzcCRshA4WG13V6y4pOs8pxfuu1CU0L1f0DfrurRWnaubhhVMO32xbEGOrMCRm%2FAGLWSXMX%2BdxpEbTq4I6arbq9kZOMalTFbGIrXY0ho4V8bXG8YRSlBiVRQhhyOes2wTCyVcF6YJ5LKAL5ktCopH6T7izIiZrDjZ531utl9%2FPfrzkpGp7fsA7vEm4%2BfSsMRIP3dlyxGNymfYkV8cDLYjrtTYenKdxyPyBoboY7e809VB79F5qYJTaRxFIxzboVQqEPu4czYaZs%2FZwUZZTd4D5TkpfWQIPtiBRDzVCh3u9%2Fr7fTuHYRIbs5JW%2BinwUF9STizMH4RO75Egms%2FSN9Q4XmaZndgR2xLbVDYCaPl2McnXr3OSD5PvjEQ5d6IpM%2FxcgWxeym8SBVjGKZAuqv%2F%2BlLqLmL2RBFb%2F%2FKIvZqXkrfRclRMI9qa28liSP%2B2ySzuRPPdLUftycKibOIXK0Qa2g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240501T010049Z&X-Amz-SignedHeaders=host&X-Amz-Expires=43200&X-Amz-Credential=ASIA3M7IX6VTLQ2ORRSH%2F20240501%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=6def0986af90c30c0ee463aab96a873839185ad05162498c8e5cc66ea18f4ec8
+
 # add server args here e.g. --grpc-use-ssl, --grpc-server-certs, repository-poll-secs, etc
 serverArgs:
   - 'tritonserver'
@@ -25,8 +27,6 @@ loadmodels:
   enabled: true
 
 env:
-  - name: MODELS_URL
-    value: "abc"
   - name: CAJAL_LICENSE
     value: "/inference/license/license.cfg"
 
