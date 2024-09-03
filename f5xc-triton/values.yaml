@@ -32,6 +32,16 @@ env:
 
 imagePullSecrets: []
 
+imageRegistryCredentials: 
+  - name: firstregistrycred
+    registry: abc
+    user: def 
+    password: ghi
+  - name: secondregistrycred
+    registry: jkl 
+    user: mno 
+    password: pqr
+
 ports: 
   - containerPort: 8000
     name: http

@@ -182,3 +182,14 @@ Currently manual steps which will ultimately be automated.
 TBD
 ### ... for the dashboard
 TBD
+
+
+###
+```shell
+docker pull docker pull nvcr.io/nvidia/tritonserver:24.03-py3-sdk
+docker run -it --rm --net=host nvcr.io/nvidia/tritonserver:24.03-py3-sdk
+```
+from within the triton sdk
+```shell
+/workspace/install/bin/image_client -m densenet_onnx -c 3 -s INCEPTION /workspace/images/mug.jpg
+```

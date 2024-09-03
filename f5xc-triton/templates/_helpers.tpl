@@ -90,3 +90,7 @@ Selector labels
 app.kubernetes.io/name: {{ include "f5xc-triton-grafana.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "imagePullSecret" }}
+{{- printf "{\"auths\": {\"%s\": {\"auth\": \"%s\"}}}" .registry (printf "%s:%s" .user .password | b64enc) | b64enc }}
+{{- end }}
